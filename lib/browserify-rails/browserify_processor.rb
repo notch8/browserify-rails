@@ -240,13 +240,19 @@ module BrowserifyRails
       # Some command flags (such as --list) make the output go to stdout,
       # ignoring -o. If this happens, we give out stdout instead.
       # If we're using exorcist, then we directly use its output
-      if uses_exorcist && exorcist_stdout.present?
+      output = if uses_exorcist && exorcist_stdout.present?
         exorcist_stdout
       elsif stdout.present?
         stdout
       else
         output
       end
+
+      if config.post_process.present?
+        output = config.post_process.call(output)
+      end
+
+      return output
     end
 
     def uses_browserifyinc(force=nil)

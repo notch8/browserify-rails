@@ -7,6 +7,9 @@ module BrowserifyRails
     # Browserify every file if true. Can be a proc.
     config.browserify_rails.force = false
 
+    # Proc to run on processed output
+    config.browserify_rails.post_process = false
+
     # Which paths should be browserified?
     config.browserify_rails.paths = [lambda { |p| p.start_with?(Rails.root.join("app").to_s) },
                                      lambda { |p| p.start_with?(Rails.root.join("node_modules").to_s) }]

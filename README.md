@@ -128,6 +128,15 @@ class My::Application < Rails::Application
   # The default is `false`
   config.browserify_rails.force = ->(file) { File.extname(file) == ".ts" }
 
+  # Add a post process proc, this is great for swapping in 
+  # image paths or other Rails data. This exmaple changes out $imagePath
+  # for asset pipeline paths
+  #
+  # Can be any Proc, defaults to false
+  config.browserify_rails.post_process = Proc.new {|output|
+    output.gsub(/\$imagePath\('(.*?)'\)/, "'#{ActionController::Base.helpers.image_path($1)}'")
+  }
+
   # Command line options used when running browserify
   #
   # can be provided as an array:
